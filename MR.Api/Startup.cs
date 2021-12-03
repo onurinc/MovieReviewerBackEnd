@@ -10,6 +10,12 @@ using MR.DataAccessLayer.Repositories;
 using MR.LogicLayer.Interfaces;
 using MR.LogicLayer.Services;
 using MR.DataAccessLayer.Data;
+using MR.LogicLayer.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using MR.DataAccessLayer.Context;
+using Microsoft.AspNetCore.Identity;
 
 namespace MR.Api
 {
@@ -25,6 +31,7 @@ namespace MR.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<JwtConfig>(Configuration.GetSection("JwtConfig"));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -37,6 +44,31 @@ namespace MR.Api
                 options.AssumeDefaultVersionWhenUnspecified = true;
                 options.DefaultApiVersion = Microsoft.AspNetCore.Mvc.ApiVersion.Default;
             });
+
+            services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(jwt => {
+                var key = Encoding.ASCII.GetBytes(Configuration["JwtConfig:Secret"]);
+
+                jwt.SaveToken = true;
+                jwt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    RequireExpirationTime = false,
+                    ValidateLifetime = true
+                };
+
+            });
+
+            services.AddDefaultIdentity<IdentityUser>(options 
+                => options.SignIn.RequireConfirmedAccount = true)
+                .AddEntityFrameworkStores<MovieReviewerContext>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -67,6 +99,7 @@ namespace MR.Api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
