@@ -9,6 +9,7 @@ using MR.DataAccessLayer.Interfaces;
 using MR.DataAccessLayer.Repositories;
 using MR.LogicLayer.Interfaces;
 using MR.LogicLayer.Services;
+using MR.DataAccessLayer.Data;
 
 namespace MR.Api
 {
@@ -29,6 +30,8 @@ namespace MR.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MR.Api", Version = "v1" });
             });
+
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // DbContext Register
             services.AddDbContext<DataAccessLayer.Context.MovieReviewerContext>(options =>
