@@ -31,6 +31,13 @@ namespace MR.Api
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MR.Api", Version = "v1" });
             });
 
+            services.AddApiVersioning(options =>
+            {
+                options.ReportApiVersions = true;
+                options.AssumeDefaultVersionWhenUnspecified = true;
+                options.DefaultApiVersion = Microsoft.AspNetCore.Mvc.ApiVersion.Default;
+            });
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // DbContext Register

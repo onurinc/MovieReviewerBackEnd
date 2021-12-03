@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace MR.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:ApiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class UsersController : ControllerBase
     {
         private IUnitOfWork _unitOfWork;
