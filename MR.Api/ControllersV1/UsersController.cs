@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MR.Api.ControllersV1;
 using MR.DataAccessLayer.Entities;
 using MR.DataAccessLayer.Entities.Dto;
 using MR.DataAccessLayer.Interfaces;
@@ -7,16 +8,10 @@ using System.Threading.Tasks;
 
 namespace MR.Api.Controllers
 {
-    [Route("api/v{version:ApiVersion}/[controller]")]
-    [ApiController]
-    [ApiVersion("1.0")]
-    public class UsersController : ControllerBase
+    public class UsersController : BaseController
     {
-        private IUnitOfWork _unitOfWork;
-
-        public UsersController(IUnitOfWork unitOfWork)
+        public UsersController(IUnitOfWork unitOfWork): base(unitOfWork)
         {
-            _unitOfWork = unitOfWork;
         }
 
         [HttpGet]
