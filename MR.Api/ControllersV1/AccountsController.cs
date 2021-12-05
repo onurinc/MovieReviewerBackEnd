@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using MR.DataAccessLayer.Entities;
 using MR.DataAccessLayer.Interfaces;
 using MR.LogicLayer.Configuration;
 using MR.LogicLayer.Models.DTOs.Incoming;
@@ -69,6 +70,17 @@ namespace MR.Api.ControllersV1
                         Errors = isCreated.Errors.Select(x => x.Description).ToList()
                     });
                 }
+
+                var _user = new User();
+                _user.IdentityId = new Guid(newUser.Id);
+                _user.FirstName = registrationDto.FirstName;
+                _user.LastName = registrationDto.LastName;
+                _user.Email = registrationDto.Email;
+                _user.Status = 1;
+
+                await _unitOfWork.Users.Add(_user);
+                await _unitOfWork.CompleteAsync();
+
 
                 var token = GenerateJwtToken(newUser);
 

@@ -29,7 +29,6 @@ namespace MR.Api.Controllers
             _user.FirstName = user.FirstName;
             _user.LastName = user.LastName;
             _user.Email = user.Email;
-            _user.DateOfBirth = Convert.ToDateTime(user.DateOfBirth);
             _user.Status = 1;
 
             await _unitOfWork.Users.Add(_user);
