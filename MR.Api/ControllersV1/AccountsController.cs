@@ -103,6 +103,65 @@ namespace MR.Api.ControllersV1
             }
         }
 
+        [HttpPost]
+        [Route("Login")]
+        public async Task<IActionResult> Login([FromBody] UserLoginRequestDto loginDto)
+        {
+            if (ModelState.IsValid)
+            {
+
+                // check if email exist 
+
+
+                var userExist = await _userManager.FindByEmailAsync(loginDto.Email);
+                if(userExist == null)
+                {
+                    return BadRequest(new UserLoginResponseDto()
+                    {
+                        Succes = false,
+                        Errors = new List<string>()
+                        {
+                            "Invalid authentication request"
+                        }
+                    });
+                }
+
+                // check if user has valid password
+                var isCorrect = await _userManager.CheckPasswordAsync(userExist, loginDto.Password);
+                if (isCorrect) 
+                {
+                    var jwtToken = GenerateJwtToken(userExist);
+                    return Ok(new UserLoginResponseDto()
+                        {
+                        Succes = true,
+                        Token = jwtToken
+                        });
+                }
+
+                else
+                {
+                    return BadRequest(new UserLoginResponseDto()
+                    {
+                        Succes = false,
+                        Errors = new List<string>()
+                        {
+                            "Password doesnt match"
+                        }
+                    });
+                }
+            }
+                else
+            {
+                return BadRequest(new UserRegistrationResponseDto
+                {
+                    Succes = false,
+                    Errors = new List<string>(){
+                    "Invalid payload"
+                }
+                });
+            }
+        }
+
         private string GenerateJwtToken(IdentityUser user)
         {
             // the handler is going to be responsible for creating the token
