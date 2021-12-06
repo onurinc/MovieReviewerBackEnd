@@ -67,7 +67,6 @@ namespace MR.Api
             }).AddJwtBearer(jwt => {
                 jwt.SaveToken = true;
                 jwt.TokenValidationParameters = tokenValidationParameters;
-
             });
 
             services.AddDefaultIdentity<IdentityUser>(options 

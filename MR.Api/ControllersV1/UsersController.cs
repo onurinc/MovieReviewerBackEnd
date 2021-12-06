@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MR.Api.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersController : BaseController
     {
         public UsersController(IUnitOfWork unitOfWork): base(unitOfWork)

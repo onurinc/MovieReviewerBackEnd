@@ -15,8 +15,4 @@
     <ProjectReference Include="..\MR.DataAccessLayer\MR.DataAccessLayer.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Models\DTOs\Generic\" />
-  </ItemGroup>
-
 </Project>

@@ -11,8 +11,8 @@ namespace MR.DataAccessLayer.Entities
         public string Token { get; set; }
 
         public string JwtId { get; set; }
-        public string IsUsed { get; set; }
-        public string IsRevoked { get; set; }
+        public bool IsUsed { get; set; }
+        public bool IsRevoked { get; set; }
 
         public DateTime ExpiryDate { get; set; }
 
