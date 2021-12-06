@@ -10,15 +10,15 @@ using System.Threading.Tasks;
 
 namespace MR.DataAccessLayer.Repositories
 {
-    class UserRepository : GenericRepository<User>, IUserRepository
+    class RefreshTokensRepository : GenericRepository<RefreshToken>, IRefreshTokensRepository
     {
-        public UserRepository(
+        public RefreshTokensRepository(
             MovieReviewerContext movieReviewerContext, ILogger logger)
-            : base (movieReviewerContext, logger)
+            : base(movieReviewerContext, logger)
         {
         }
 
-        public override async Task<IEnumerable<User>> GetAll()
+        public override async Task<IEnumerable<RefreshToken>> GetAll()
         {
             try
             {
@@ -26,10 +26,11 @@ namespace MR.DataAccessLayer.Repositories
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "{Repo} GetAll method has generated an error", typeof(UserRepository));
-                    return new List<User>();
+                _logger.LogError(ex, "{Repo} GetAll method has generated an error", typeof(RefreshTokensRepository));
+                return new List<RefreshToken>();
             }
         }
 
     }
 }
+
