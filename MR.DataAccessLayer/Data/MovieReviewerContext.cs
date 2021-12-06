@@ -8,6 +8,7 @@ namespace MR.DataAccessLayer.Context
     {
 
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
 
         public DbSet<Comment> Comments { get; set; }
 
