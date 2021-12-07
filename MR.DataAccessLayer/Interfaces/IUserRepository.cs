@@ -9,6 +9,9 @@ namespace MR.DataAccessLayer.Interfaces
 {
     public interface IUserRepository : IGenericRepository<User>
     {
+        Task<bool> UpdateUserProfile(User user);
+
+        Task<User> GetUserByIdentityId(Guid identityId);
 
     }
 }

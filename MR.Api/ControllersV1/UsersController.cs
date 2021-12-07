@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MR.Api.ControllersV1;
 using MR.DataAccessLayer.Entities;
@@ -13,7 +12,9 @@ namespace MR.Api.Controllers
     //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersController : BaseController
     {
-        public UsersController(IUnitOfWork unitOfWork): base(unitOfWork)
+        public UsersController(
+            IUnitOfWork unitOfWork,
+            UserManager<IdentityUser> userManager) : base(unitOfWork, userManager)
         {
         }
 

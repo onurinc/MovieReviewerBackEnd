@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MR.DataAccessLayer.Interfaces;
 using System;
@@ -14,10 +15,13 @@ namespace MR.Api.ControllersV1
     public class BaseController : ControllerBase
     {
         public IUnitOfWork _unitOfWork;
+        public UserManager<IdentityUser> _userManager;
 
-        public BaseController(IUnitOfWork unitOfWork)
+        public BaseController(IUnitOfWork unitOfWork,
+            UserManager<IdentityUser> userManager)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
     }
 }

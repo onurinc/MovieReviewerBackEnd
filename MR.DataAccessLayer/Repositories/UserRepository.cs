@@ -31,5 +31,45 @@ namespace MR.DataAccessLayer.Repositories
             }
         }
 
+       public async Task<bool> UpdateUserProfile(User user)
+        {
+            try
+            {
+                var existingUser =  
+                    await dbSet.Where(x => x.Status == 1
+                    && x.Id == user.Id)
+                    .FirstOrDefaultAsync();
+                if (existingUser == null)
+                {
+                    return false;
+                }
+                existingUser.FirstName = user.FirstName;
+                existingUser.MiddleName = user.MiddleName;
+                existingUser.LastName = user.LastName;
+                existingUser.Country = user.Country;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "{Repo} UpdateUserProfile method has generated an error", typeof(UserRepository));
+                return false;
+            }
+        }
+
+        public async Task<User> GetUserByIdentityId(Guid identityId)
+        {
+            try
+            {
+                return await dbSet.Where(x => x.Status == 1 && x.IdentityId == identityId)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "{Repo} UpdateUserProfile method has generated an error", typeof(UserRepository));
+                return null;
+            }
+        }
+
     }
 }
