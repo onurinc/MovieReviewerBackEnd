@@ -4,6 +4,7 @@ using MR.Api.ControllersV1;
 using MR.DataAccessLayer.Entities;
 using MR.DataAccessLayer.Entities.Dto;
 using MR.DataAccessLayer.Interfaces;
+using MR.LogicLayer.Models.DTOs.Incoming;
 using System;
 using System.Threading.Tasks;
 
@@ -43,6 +44,46 @@ namespace MR.Api.ControllersV1
             return Ok(profile);
         }
 
+        [HttpPut]
+        public async Task<IActionResult> UpdateProfile([FromBody] UpdateProfileDto updateProfileDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Invalid payload");
+            }
+
+            var loggedInUser = await _userManager.GetUserAsync(HttpContext.User);
+                            
+                if (loggedInUser == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            var identityId = new Guid(loggedInUser.Id);
+
+            var userProfile = await _unitOfWork.Users.GetUserByIdentityId(identityId);
+
+            if (userProfile == null)
+            {
+                return BadRequest("User not found");
+            }
+
+            userProfile.FirstName = updateProfileDto.FirstName;
+            userProfile.MiddleName = updateProfileDto.MiddleName;
+            userProfile.LastName = updateProfileDto.LastName;
+            userProfile.Country = updateProfileDto.Country;
+
+            var isUpdated = await _unitOfWork.Users.UpdateUserProfile(userProfile);
+
+            if (isUpdated)
+            {
+                await _unitOfWork.CompleteAsync();
+                return Ok(userProfile);
+            }
+
+            return BadRequest("Something went wrong, contact the administrator to report the issue");
+
+        }
 
     }
 }

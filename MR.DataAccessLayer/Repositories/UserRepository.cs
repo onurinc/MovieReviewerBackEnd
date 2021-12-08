@@ -61,7 +61,6 @@ namespace MR.DataAccessLayer.Repositories
             try
             {
                 return await dbSet.Where(x => x.Status == 1 && x.IdentityId == identityId)
-                    .AsNoTracking()
                     .FirstOrDefaultAsync();
             }
             catch (Exception ex)
