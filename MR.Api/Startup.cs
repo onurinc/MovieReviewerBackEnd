@@ -56,17 +56,31 @@ namespace MR.Api
                 RequireExpirationTime = false,
                 ValidateLifetime = true
             };
-
+            
             services.AddSingleton(tokenValidationParameters);
+
+            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwt =>
+            //jwt.TokenValidationParameters = tokenValidationParameters
+            //);
 
             services.AddAuthentication(option =>
             {
                 option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(jwt => {
+            }).AddJwtBearer(jwt =>
+            {
                 jwt.SaveToken = true;
                 jwt.TokenValidationParameters = tokenValidationParameters;
+                //new TokenValidationParameters
+                //{
+                //    ValidateIssuerSigningKey = true,
+                //    IssuerSigningKey = new SymmetricSecurityKey(key),
+                //    ValidateIssuer = false,
+                //    ValidateAudience = false,
+                //    RequireExpirationTime = false,
+                //    ValidateLifetime = true
+                //};
             });
 
             services.AddDefaultIdentity<IdentityUser>(options 

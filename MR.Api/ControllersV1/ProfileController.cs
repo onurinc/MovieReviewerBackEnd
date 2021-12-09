@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MR.Api.ControllersV1;
-using MR.DataAccessLayer.Entities;
-using MR.DataAccessLayer.Entities.Dto;
 using MR.DataAccessLayer.Interfaces;
 using MR.LogicLayer.Models.DTOs.Incoming;
 using System;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace MR.Api.ControllersV1
 {
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class ProfileController : BaseController
