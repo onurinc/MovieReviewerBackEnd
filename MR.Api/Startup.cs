@@ -31,6 +31,7 @@ namespace MR.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.Configure<JwtConfig>(Configuration.GetSection("JwtConfig"));
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -111,6 +112,13 @@ namespace MR.Api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MR.Api v1"));
             }
+
+            app.UseCors(options => options
+            .WithOrigins(new []{"http://localhost:3000", "http://localhost:8000"})
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()
+            );
 
             app.UseHttpsRedirection();
 
