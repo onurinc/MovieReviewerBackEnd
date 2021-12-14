@@ -12,6 +12,7 @@ namespace MR.DataAccessLayer.Interfaces
 
         IRefreshTokensRepository RefreshTokens { get; }
 
+        IReviewRepository Reviews { get; }
         Task CompleteAsync();
     }
 }

@@ -1,4 +1,4 @@
-﻿    using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 using MR.DataAccessLayer.Context;
 using MR.DataAccessLayer.Interfaces;
 using MR.DataAccessLayer.Repositories;
@@ -17,6 +17,7 @@ namespace MR.DataAccessLayer.Data
 
         public IUserRepository Users { get; private set; }
         public IRefreshTokensRepository RefreshTokens { get; private set; }
+        public IReviewRepository Reviews { get; private set; }
 
         public UnitOfWork(MovieReviewerContext movieReviewerContext, ILoggerFactory loggerFactory)
         {
@@ -25,6 +26,7 @@ namespace MR.DataAccessLayer.Data
 
             Users = new UserRepository(movieReviewerContext, _logger);
             RefreshTokens = new RefreshTokensRepository(movieReviewerContext, _logger);
+            Reviews = new ReviewRepository(movieReviewerContext, _logger);
         }
 
         public async Task CompleteAsync()

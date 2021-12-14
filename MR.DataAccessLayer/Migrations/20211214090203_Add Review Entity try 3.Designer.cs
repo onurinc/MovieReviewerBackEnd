@@ -4,14 +4,16 @@ using MR.DataAccessLayer.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MR.DataAccessLayer.Migrations
 {
     [DbContext(typeof(MovieReviewerContext))]
-    partial class MovieReviewerContextModelSnapshot : ModelSnapshot
+    [Migration("20211214090203_Add Review Entity try 3")]
+    partial class AddReviewEntitytry3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
