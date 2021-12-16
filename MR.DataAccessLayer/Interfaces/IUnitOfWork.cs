@@ -10,8 +10,6 @@ namespace MR.DataAccessLayer.Interfaces
     {
         IUserRepository Users { get; }
 
-        IRefreshTokensRepository RefreshTokens { get; }
-
         IReviewRepository Reviews { get; }
         Task CompleteAsync();
     }

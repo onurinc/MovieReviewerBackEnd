@@ -16,7 +16,6 @@ namespace MR.DataAccessLayer.Data
         private readonly ILogger _logger;
 
         public IUserRepository Users { get; private set; }
-        public IRefreshTokensRepository RefreshTokens { get; private set; }
         public IReviewRepository Reviews { get; private set; }
 
         public UnitOfWork(MovieReviewerContext movieReviewerContext, ILoggerFactory loggerFactory)
@@ -25,7 +24,6 @@ namespace MR.DataAccessLayer.Data
             _logger = loggerFactory.CreateLogger("db_logs");
 
             Users = new UserRepository(movieReviewerContext, _logger);
-            RefreshTokens = new RefreshTokensRepository(movieReviewerContext, _logger);
             Reviews = new ReviewRepository(movieReviewerContext, _logger);
         }
 
