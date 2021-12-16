@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MR.LogicLayer.Models.DTOs.Incoming
+namespace MR.DataAccessLayer.Entities.DTOs.Incoming
 {
     public class UpdateProfileDto
     {

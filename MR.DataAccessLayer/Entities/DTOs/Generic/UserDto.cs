@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MR.DataAccessLayer.Entities.Dto
+﻿
+namespace MR.DataAccessLayer.Entities.DTOs.Generic
 {
     public class UserDto
     {

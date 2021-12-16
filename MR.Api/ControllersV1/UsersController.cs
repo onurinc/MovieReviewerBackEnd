@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MR.Api.ControllersV1;
 using MR.DataAccessLayer.Entities;
-using MR.DataAccessLayer.Entities.Dto;
+using MR.DataAccessLayer.Entities.DTOs.Generic;
 using MR.DataAccessLayer.Interfaces;
 using System;
 using System.Threading.Tasks;

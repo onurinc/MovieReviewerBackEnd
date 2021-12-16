@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
@@ -14,10 +14,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MR.DataAccessLayer\MR.DataAccessLayer.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\DTOs\Generic\" />
   </ItemGroup>
 
 </Project>

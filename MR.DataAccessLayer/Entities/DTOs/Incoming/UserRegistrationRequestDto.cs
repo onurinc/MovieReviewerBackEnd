@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
-namespace MR.LogicLayer.Models.DTOs.Incoming
+using System.ComponentModel.DataAnnotations;
+
+namespace MR.DataAccessLayer.Entities.DTOs.Incoming
 {
     public class UserRegistrationRequestDto
     {

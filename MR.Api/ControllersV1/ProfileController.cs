@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MR.DataAccessLayer.Interfaces;
-using MR.LogicLayer.Models.DTOs.Incoming;
+using MR.DataAccessLayer.Entities.DTOs.Incoming;
 using System;
 using System.Threading.Tasks;
 
@@ -22,7 +22,7 @@ namespace MR.Api.ControllersV1
 
         [HttpGet]
         public async Task<IActionResult> GetProfile()
-        {
+            {
             // Based on the JWT Token a User obj is attached to this. This allows us to get the LoggedInUser
             var loggedInUser = await _userManager.GetUserAsync(HttpContext.User);
 

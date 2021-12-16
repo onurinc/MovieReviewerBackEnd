@@ -6,8 +6,8 @@ using Microsoft.IdentityModel.Tokens;
 using MR.DataAccessLayer.Entities;
 using MR.DataAccessLayer.Interfaces;
 using MR.LogicLayer.Configuration;
-using MR.LogicLayer.Models.DTOs.Incoming;
-using MR.LogicLayer.Models.DTOs.Outgoing;
+using MR.DataAccessLayer.Entities.DTOs.Incoming;
+using MR.DataAccessLayer.Entities.DTOs.Outgoing;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -178,6 +178,7 @@ namespace MR.Api.ControllersV1
                 Subject = new ClaimsIdentity(new[]
                 {
                         new Claim("Id", user.Id),
+                        new Claim(ClaimTypes.NameIdentifier, user.Id),
                         new Claim(JwtRegisteredClaimNames.Sub, user.Email),
                         new Claim(JwtRegisteredClaimNames.Email, user.Email),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
