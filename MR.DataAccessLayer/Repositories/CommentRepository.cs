@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using MR.DataAccessLayer.Context;
 using MR.DataAccessLayer.Entities;
 using MR.DataAccessLayer.Interfaces;
@@ -9,92 +10,72 @@ using System.Threading.Tasks;
 
 namespace MR.DataAccessLayer.Repositories
 {
-    public class CommentRepository : ICommentRepository
+    public class CommentRepository : GenericRepository<Comment>, ICommentRepository
     {
-        private readonly MovieReviewerContext _moviereviewerContext;
 
-        public CommentRepository(MovieReviewerContext moviereviewerContext)
-        {
-            _moviereviewerContext = moviereviewerContext;
+        public CommentRepository(
+            MovieReviewerContext movieReviewerContext, ILogger logger)
+            : base(movieReviewerContext, logger)
+        { 
         }
 
-
-        public async Task<Comment> GetCommentById(int CommentId)
+        public override async Task<IEnumerable<Comment>> GetAll()
         {
             try
             {
-                var item = await _moviereviewerContext.Set<Comment>()
-                    .Where(x => x.CommentId == CommentId)
-                    .AsNoTracking()
+                return await dbSet.ToListAsync();
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "{Repo} GetAll method error", typeof(CommentRepository));
+                return new List<Comment>();
+            }
+        }
+
+
+        public override async Task<bool> Upsert(Comment comment)
+        {
+            try
+            {
+                var existingComment = await dbSet.Where(x => x.CommentId == comment.CommentId)
                     .FirstOrDefaultAsync();
 
-                if (item == null)
+                if (existingComment != null)
+                    return await Add(comment);
+                existingComment.CommentId = comment.CommentId;
+                existingComment.UserId = comment.UserId;
+                existingComment.MovieId = comment.MovieId;
+                existingComment.Body = comment.Body;
+
+                return true;
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "{Repo} Upsert method error", typeof(UserRepository));
+                return false;
+            }
+        }
+
+        public async Task<bool> Delete(Guid id)
+        {
+            try
+            {
+                var exist = await dbSet.Where(x => x.CommentId == id)
+                    .FirstOrDefaultAsync();
+
+                if(exist != null)
                 {
-                    throw new Exception($"Couldn't find entity with id={CommentId}");
+                    dbSet.Remove(exist);
+                    return true;
                 }
-
-                return item;
+                return false;
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                throw new Exception($"Couldn't retrieve entity with id={CommentId}: {ex.Message}");
+                _logger.LogError(ex, "{Repo} Delete method error", typeof(UserRepository));
+                return false;
             }
-        }
-
-        public async Task<Comment> CreateComment(Comment comment)
-        {
-            if (comment == null)
-            {
-                throw new ArgumentNullException(nameof(comment));
-            }
-
-            try
-            {
-                await _moviereviewerContext.Set<Comment>().AddAsync(comment);
-                await _moviereviewerContext.SaveChangesAsync();
-                return comment;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"{nameof(comment)} could not be saved: {ex.Message}");
-            }
-        }
-
-        public async Task<Comment> UpdateComment(Comment comment)
-        {
-            if (comment == null)
-            {
-                throw new ArgumentNullException(nameof(comment));
-            }
-
-            try
-            {
-                _moviereviewerContext.Set<Comment>().Update(comment);
-                await _moviereviewerContext.SaveChangesAsync();
-                return comment;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"{nameof(comment)} could not be updated: {ex.Message}");
-            }
-        }
-
-        public async Task<bool> DeleteComment(int CommentId)
-        {
-            var entity = await _moviereviewerContext.Set<Comment>().FindAsync(CommentId);
-            if (entity == null)
-            {
-                throw new Exception($"{nameof(CommentId)} could not be found.");
-            }
-
-            _moviereviewerContext.Set<Comment>().Remove(entity);
-            await _moviereviewerContext.SaveChangesAsync();
-            return true;
-        }
-
-        public Task<IQueryable<Comment>> GetAllComments()
-        {
-            throw new NotImplementedException();
         }
     }
 }

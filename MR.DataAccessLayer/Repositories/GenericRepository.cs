@@ -35,6 +35,12 @@ namespace MR.DataAccessLayer.Repositories
             return await dbSet.FindAsync(id);
         }
 
+        public virtual async Task<bool> Upsert(T entity)
+        {
+            await dbSet.AddAsync(entity);
+            return true;
+        }
+
         public virtual async Task<bool> Add(T entity)
         {
             await dbSet.AddAsync(entity);
@@ -46,7 +52,7 @@ namespace MR.DataAccessLayer.Repositories
             throw new NotImplementedException();
         }
 
-        public virtual Task<bool> Delete(Guid id, string userId)
+        public virtual async Task<bool> Delete(Guid id, string userId)
         {
             throw new NotImplementedException();
         }

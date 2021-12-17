@@ -7,8 +7,6 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using MR.DataAccessLayer.Interfaces;
 using MR.DataAccessLayer.Repositories;
-using MR.LogicLayer.Interfaces;
-using MR.LogicLayer.Services;
 using MR.DataAccessLayer.Data;
 using MR.LogicLayer.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -93,12 +91,6 @@ namespace MR.Api
             // DbContext Register
             services.AddDbContext<DataAccessLayer.Context.MovieReviewerContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
-            // DI Configuration Logic Layer
-            services.AddScoped<ICommentService, CommentService>();
-
-            // DI Configuration Data Layer
-            services.AddScoped<ICommentRepository, CommentRepository>();
 
 
         }

@@ -7,18 +7,10 @@ using System.Threading.Tasks;
 
 namespace MR.DataAccessLayer.Interfaces
 {
-    public interface ICommentRepository
+    public interface ICommentRepository : IGenericRepository<Comment>
     {
 
-        Task<IQueryable<Comment>> GetAllComments();
 
-        Task<Comment> GetCommentById(int CommentId);
-
-        Task<Comment> CreateComment(Comment comment);
-
-        Task<Comment> UpdateComment(Comment comment);
-
-        Task<bool> DeleteComment(int CommentId);
 
     }
 }

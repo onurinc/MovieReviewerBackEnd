@@ -9,7 +9,7 @@ namespace MR.DataAccessLayer.Interfaces
     public interface IUnitOfWork
     {
         IUserRepository Users { get; }
-
+        ICommentRepository Comments { get; }
         IReviewRepository Reviews { get; }
         Task CompleteAsync();
     }
