@@ -59,6 +59,7 @@ namespace MR.Api.ControllersV1
                 await _unitOfWork.Comments.Add(_comment);
                 await _unitOfWork.CompleteAsync();
 
+            //TODO: Return comment so it looks nice in the response
                 return Ok(comment);
         }
 

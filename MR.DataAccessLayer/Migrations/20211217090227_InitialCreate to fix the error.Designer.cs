@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MR.DataAccessLayer.Migrations
 {
     [DbContext(typeof(MovieReviewerContext))]
-    [Migration("20211214090030_Add review table 2nd try")]
-    partial class Addreviewtable2ndtry
+    [Migration("20211217090227_InitialCreate to fix the error")]
+    partial class InitialCreatetofixtheerror
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,10 +23,9 @@ namespace MR.DataAccessLayer.Migrations
 
             modelBuilder.Entity("MR.DataAccessLayer.Entities.Comment", b =>
                 {
-                    b.Property<int>("CommentId")
+                    b.Property<Guid>("CommentId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Body")
                         .HasColumnType("nvarchar(max)");
@@ -34,37 +33,31 @@ namespace MR.DataAccessLayer.Migrations
                     b.Property<int>("MovieId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("CommentId");
 
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("MR.DataAccessLayer.Entities.RefreshToken", b =>
+            modelBuilder.Entity("MR.DataAccessLayer.Entities.Review", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<DateTime>("ExpiryDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsRevoked")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsUsed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("JwtId")
+                    b.Property<string>("Body")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MovieId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Rating")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
-
-                    b.Property<string>("Token")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -73,7 +66,7 @@ namespace MR.DataAccessLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("Reviews");
                 });
 
             modelBuilder.Entity("MR.DataAccessLayer.Entities.User", b =>
@@ -304,7 +297,7 @@ namespace MR.DataAccessLayer.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("MR.DataAccessLayer.Entities.RefreshToken", b =>
+            modelBuilder.Entity("MR.DataAccessLayer.Entities.Review", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()

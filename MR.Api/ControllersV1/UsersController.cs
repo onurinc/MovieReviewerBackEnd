@@ -23,7 +23,6 @@ namespace MR.Api.Controllers
         }
 
         [HttpGet]
-        [HttpHead]
         public async Task<IActionResult> GetUsers()
         {
             var users = await _unitOfWork.Users.GetAll();
@@ -44,8 +43,7 @@ namespace MR.Api.Controllers
             return CreatedAtRoute("GetUser", new { id = _user.Id }, user);
         }
 
-        [HttpGet]
-        [Route("GetUser", Name = "GetUser")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetUser(Guid id)
         {
             var user = await _unitOfWork.Users.GetById(id);
