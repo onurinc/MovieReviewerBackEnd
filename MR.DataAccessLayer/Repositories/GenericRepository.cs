@@ -52,7 +52,7 @@ namespace MR.DataAccessLayer.Repositories
             throw new NotImplementedException();
         }
 
-        public virtual async Task<bool> Delete(Guid id, string userId)
+        public virtual async Task<bool> Delete(Guid id)
         {
             throw new NotImplementedException();
         }

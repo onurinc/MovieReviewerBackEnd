@@ -103,16 +103,16 @@ namespace MR.Api.ControllersV1
 
             var loggedInUser = await _userManager.GetUserAsync(HttpContext.User);
 
+            //if (!loggedInUser.Id.Equals(commentToEdit.UserId))
+            //{
+            //    return BadRequest("You need to be logged in on the right account to perform this action");
+            //}
+
             if (loggedInUser == null)
             {
                 return BadRequest("You need to be logged in to perform this action");
             }
 
-            var identityId = new Guid(loggedInUser.Id);
-
-            commentToEdit.CommentId = comment.CommentId;
-            commentToEdit.MovieId = comment.MovieId;
-            commentToEdit.UserId = identityId;
             commentToEdit.Body = comment.Body;
 
             var isUpdated = await _unitOfWork.Comments.Upsert(commentToEdit);
@@ -125,5 +125,20 @@ namespace MR.Api.ControllersV1
 
             return BadRequest("Something went wrong, contact the administrator to report the issue");
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult>DeleteItem(Guid id)
+        {
+            var item = await _unitOfWork.Comments.GetById(id);
+            if (item == null)
+            {
+                return BadRequest();
+            }
+            await _unitOfWork.Comments.Delete(id);
+            await _unitOfWork.CompleteAsync();
+
+            return Ok(id);
+        }
+
     }
 }

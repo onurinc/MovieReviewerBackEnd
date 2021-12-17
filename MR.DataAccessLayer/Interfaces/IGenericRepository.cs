@@ -16,7 +16,7 @@ namespace MR.DataAccessLayer.Interfaces
 
         Task<bool> Upsert(T entity);
 
-        Task<bool> Delete(Guid id, string userId);
+        Task<bool> Delete(Guid id);
 
         Task<bool> Update(T entity);
 

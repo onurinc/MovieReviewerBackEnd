@@ -41,10 +41,6 @@ namespace MR.DataAccessLayer.Repositories
                     .FirstOrDefaultAsync();
 
                 if (existingComment != null)
-                    return await Add(comment);
-                existingComment.CommentId = comment.CommentId;
-                existingComment.UserId = comment.UserId;
-                existingComment.MovieId = comment.MovieId;
                 existingComment.Body = comment.Body;
 
                 return true;
