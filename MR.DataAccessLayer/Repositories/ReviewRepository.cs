@@ -22,7 +22,7 @@ namespace MR.DataAccessLayer.Repositories
         {
             try
             {
-                return await dbSet.Where(x => x.Status == 1).AsNoTracking().ToListAsync();
+                return await dbSet.ToListAsync();
             }
             catch (Exception ex)
             {
@@ -36,9 +36,9 @@ namespace MR.DataAccessLayer.Repositories
             try
             {
                 var existingReview =
-                    await dbSet.Where(x => x.Status == 1
-                    && x.Id == review.Id)
+                    await dbSet.Where(x => x.ReviewId == review.ReviewId)
                     .FirstOrDefaultAsync();
+
                 if (existingReview == null)
                 {
                     return false;
@@ -51,6 +51,27 @@ namespace MR.DataAccessLayer.Repositories
             catch (Exception ex)
             {
                 _logger.LogError(ex, "{Repo} UpdateReview method has generated an error", typeof(ReviewRepository));
+                return false;
+            }
+        }
+
+        public async Task<bool> Delete(Guid id)
+        {
+            try
+            {
+                var exist = await dbSet.Where(x => x.ReviewId == id)
+                    .FirstOrDefaultAsync();
+
+                if (exist != null)
+                {
+                    dbSet.Remove(exist);
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "{Repo} Delete method error", typeof(ReviewRepository));
                 return false;
             }
         }

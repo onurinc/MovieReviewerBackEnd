@@ -4,9 +4,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MR.DataAccessLayer.Entities
 {
-    public class Review : BaseEntity
+    public class Review
     {
-        public string UserId { get; set; }
+        public Guid ReviewId { get; set; }
+
+        public Guid UserId { get; set; }
 
         public int MovieId { get; set; }
 
@@ -14,8 +16,6 @@ namespace MR.DataAccessLayer.Entities
 
         public decimal Rating { get; set; }
 
-        [ForeignKey(nameof(UserId))]
-        public IdentityUser User { get; set; }
 
     }
 }
