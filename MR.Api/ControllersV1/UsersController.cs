@@ -23,6 +23,7 @@ namespace MR.Api.Controllers
         }
 
         [HttpGet]
+        [HttpHead]
         public async Task<IActionResult> GetUsers()
         {
             var users = await _unitOfWork.Users.GetAll();
@@ -32,6 +33,7 @@ namespace MR.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUser(UserDto user)
         {
+            //TODO: check if user exist before doing the add function
             var _user = new User();
             _user.FirstName = user.FirstName;
             _user.LastName = user.LastName;
@@ -40,7 +42,7 @@ namespace MR.Api.Controllers
 
             await _unitOfWork.Users.Add(_user);
             await _unitOfWork.CompleteAsync();
-            return CreatedAtRoute("GetUser", new { id = _user.Id }, user);
+            return Ok(user);
         }
 
         [HttpGet("{id}")]

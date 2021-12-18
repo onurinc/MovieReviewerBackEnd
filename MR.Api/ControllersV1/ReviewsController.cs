@@ -9,23 +9,23 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-
-
 namespace MR.Api.ControllersV1
 {
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
-    public class CommentsController : BaseController
+    public class ReviewsController : BaseController
     {
-        public CommentsController(
+
+        public ReviewsController(
     IUnitOfWork unitOfWork,
     UserManager<IdentityUser> userManager) : base(unitOfWork, userManager)
         {
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> CreateComment(Comment comment)
+        public async Task<IActionResult> CreateReview(Review review)
         {
             if (!ModelState.IsValid)
             {
@@ -39,70 +39,71 @@ namespace MR.Api.ControllersV1
                 });
             }
 
-                var loggedInUser = await _userManager.GetUserAsync(HttpContext.User);
+            var loggedInUser = await _userManager.GetUserAsync(HttpContext.User);
 
-                if (loggedInUser == null)
-                {
-                    return BadRequest("You need to be logged in to perform this task");
-                }
+            if (loggedInUser == null)
+            {
+                return BadRequest("You need to be logged in to perform this task");
+            }
 
-                var identityId = new Guid(loggedInUser.Id);
+            var identityId = new Guid(loggedInUser.Id);
 
-                var _comment = new Comment();
-                _comment.CommentId = new Guid();
-                _comment.MovieId = 1;
-                _comment.UserId = identityId;
-                _comment.Body = comment.Body;
+            var _review = new Review();
+            _review.ReviewId = new Guid();
+            _review.UserId = identityId;
+            _review.MovieId = review.MovieId;
+            _review.Body = review.Body;
+            _review.Rating = review.Rating;
 
-                await _unitOfWork.Comments.Add(_comment);
-                await _unitOfWork.CompleteAsync();
+            await _unitOfWork.Reviews.Add(_review);
+            await _unitOfWork.CompleteAsync();
 
-           
-                return Ok("Comment has been added");
+            return Ok("Review has been added");
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetComment(Guid id)
+        public async Task<IActionResult> GetReview(Guid id)
         {
-            var comment = await _unitOfWork.Comments.GetById(id);
+            var review = await _unitOfWork.Reviews.GetById(id);
 
-            if (comment == null)
+            if (review == null)
             {
                 return NotFound();
             }
-            return Ok(comment);
+            return Ok(review);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllComments()
+        public async Task<IActionResult> GetAllReviews()
         {
-            var users = await _unitOfWork.Comments.GetAll();
+            var reviews = await _unitOfWork.Reviews.GetAll();
 
-            if (users == null)
+            if (reviews == null)
             {
                 return NotFound();
             }
-            return Ok(users);
+            return Ok(reviews);
         }
 
+
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateComment(Guid id, Comment comment)
+        public async Task<IActionResult> UpdateReview(Guid id, Review review)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("Invalid payload");
             }
 
-            var commentToEdit = await _unitOfWork.Comments.GetById(id);
+            var reviewToEdit = await _unitOfWork.Reviews.GetById(id);
 
-            if(commentToEdit == null)
+            if (reviewToEdit == null)
             {
-                return BadRequest("Comment not found");
+                return BadRequest("Review not found");
             }
 
             var loggedInUser = await _userManager.GetUserAsync(HttpContext.User);
 
-            //if (!loggedInUser.Id.Equals(commentToEdit.UserId))
+            //if (!loggedInUser.Id.Equals(reviewToEdit.UserId))
             //{
             //    return BadRequest("You need to be logged in on the right account to perform this action");
             //}
@@ -112,32 +113,32 @@ namespace MR.Api.ControllersV1
                 return BadRequest("You need to be logged in to perform this action");
             }
 
-            commentToEdit.Body = comment.Body;
+            reviewToEdit.Body = review.Body;
+            reviewToEdit.Rating = review.Rating;
 
-            var isUpdated = await _unitOfWork.Comments.Upsert(commentToEdit);
+            var isUpdated = await _unitOfWork.Reviews.Upsert(reviewToEdit);
 
             if (isUpdated)
             {
                 await _unitOfWork.CompleteAsync();
-                return Ok(comment);
+                return Ok(review);
             }
 
             return BadRequest("Something went wrong, contact the administrator to report the issue");
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult>DeleteItem(Guid id)
+        public async Task<IActionResult> DeleteItem(Guid id)
         {
-            var item = await _unitOfWork.Comments.GetById(id);
+            var item = await _unitOfWork.Reviews.GetById(id);
             if (item == null)
             {
                 return BadRequest();
             }
-            await _unitOfWork.Comments.Delete(id);
+            await _unitOfWork.Reviews.Delete(id);
             await _unitOfWork.CompleteAsync();
 
             return Ok(id);
         }
-
     }
 }

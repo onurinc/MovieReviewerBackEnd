@@ -31,7 +31,7 @@ namespace MR.DataAccessLayer.Repositories
             }
         }
 
-        public async Task<bool> UpdateReview(Review review)
+        public async Task<bool> Upsert(Review review)
         {
             try
             {
