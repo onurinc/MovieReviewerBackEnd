@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MR.DataAccessLayer.Entities;
 using MR.DataAccessLayer.Interfaces;
-using MR.LogicLayer.Configuration;
+using MR.Api.Configuration;
 using MR.DataAccessLayer.Entities.DTOs.Incoming;
 using MR.DataAccessLayer.Entities.DTOs.Outgoing;
 using System;

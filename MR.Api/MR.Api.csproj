@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MR.DataAccessLayer\MR.DataAccessLayer.csproj" />
-    <ProjectReference Include="..\MR.LogicLayer\MR.LogicLayer.csproj" />
   </ItemGroup>
 
 </Project>

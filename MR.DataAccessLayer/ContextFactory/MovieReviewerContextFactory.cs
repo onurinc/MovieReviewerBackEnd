@@ -9,7 +9,7 @@ namespace MR.DataAccessLayer.ContextFactory
         public MovieReviewerContext CreateDbContext(string[] args)
         {
             var dbContextBuilder = new DbContextOptionsBuilder<MovieReviewerContext>();
-            var connectionString = "server=DESKTOP-NCSPB7A;database=MovieReviewer;trusted_connection=true;";
+            var connectionString = "Server=localhost\\SQLEXPRESS;Database=MovieReviewer;Trusted_Connection=True;";
 
 
             dbContextBuilder.UseSqlServer(connectionString);
