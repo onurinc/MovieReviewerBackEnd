@@ -28,6 +28,11 @@ namespace MR.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+            // DbContext Register
+            services.AddDbContext<DataAccessLayer.Context.MovieReviewerContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddCors();
             services.Configure<JwtConfig>(Configuration.GetSection("JwtConfig"));
             services.AddControllers();
@@ -86,11 +91,6 @@ namespace MR.Api
                 .AddEntityFrameworkStores<MovieReviewerContext>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-            // DbContext Register
-            services.AddDbContext<DataAccessLayer.Context.MovieReviewerContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-
 
         }
 
