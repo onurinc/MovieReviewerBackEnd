@@ -23,3 +23,20 @@ jobs:
       run: dotnet build MR.Api/MR.Api.csproj --no-restore
     - name: Test
       run: dotnet test MR.Api/MR.Api.csproj --no-build --verbosity normal
+    - name: Docker Build & Push Action
+      # You may pin to the exact commit or the version.
+      # uses: mr-smithers-excellent/docker-build-push@a7fe6652db5c7274374844e81692992f5a2befb9
+      uses: mr-smithers-excellent/docker-build-push@v5.6
+      with:
+        # Name of the Docker image
+        image: onurinc/mr-api
+        # Tags override for Docker image
+        tags: v1, latest
+        # Target Docker registry
+        registry: docker.io
+        # Location of Dockerfile, if not Dockerfile in root directory
+        dockerfile: MR.Api/Dockerfile
+        # Docker registry username
+        username: ${{ secrets.DOCKER_USERNAME }}
+        # Docker registry password
+        password: ${{ secrets.DOCKER_PASSWORD }}
