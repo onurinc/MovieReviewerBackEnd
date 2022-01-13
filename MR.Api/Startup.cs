@@ -25,13 +25,15 @@ namespace MR.Api
 
         public IConfiguration Configuration { get; }
 
+
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
             // DbContext Register
             services.AddDbContext<DataAccessLayer.Context.MovieReviewerContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddCors();
             services.Configure<JwtConfig>(Configuration.GetSection("JwtConfig"));
@@ -103,6 +105,14 @@ namespace MR.Api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MR.Api v1"));
             }
+
+            //using (var serviceScope = app.ApplicationServices.CreateScope())
+            //{
+            //        MovieReviewerContext context = serviceScope.ServiceProvider.GetService<MovieReviewerContext>();
+            //        string connectionstring = context.Database.GetConnectionString();
+            //        context.Database.EnsureCreated();
+            //        context.Database.Migrate();
+            //}
 
             app.UseCors(options => options
             .WithOrigins(new []{"http://localhost:3000", "http://localhost:8000"})
