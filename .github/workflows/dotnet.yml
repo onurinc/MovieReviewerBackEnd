@@ -18,8 +18,8 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      run: dotnet restore MovieReviewerBackEnd\MR.Api\MR.Api.csproj
+      run: dotnet restore MR.Api/MR.Api.csproj
     - name: Build
-      run: dotnet build MovieReviewerBackEnd\MR.Api\MR.Api.csproj --no-restore
+      run: dotnet build MR.Api/MR.Api.csproj --no-restore
     - name: Test
-      run: dotnet test MovieReviewerBackEnd\MR.Api\MR.Api.csproj --no-build --verbosity normal
+      run: dotnet test MR.Api/MR.Api.csproj --no-build --verbosity normal
