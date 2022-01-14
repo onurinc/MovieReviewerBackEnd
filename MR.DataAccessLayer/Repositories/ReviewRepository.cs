@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace MR.DataAccessLayer.Repositories
 {
-    class ReviewRepository : GenericRepository<Review>, IReviewRepository
+    public class ReviewRepository : GenericRepository<Review>, IReviewRepository
     {
         public ReviewRepository(
             MovieReviewerContext movieReviewerContext, ILogger logger)
