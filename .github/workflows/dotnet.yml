@@ -22,7 +22,7 @@ jobs:
     - name: Build
       run: dotnet build MR.Api/MR.Api.csproj --no-restore
     - name: Test
-      run: dotnet test MR.Api/MR.Api.csproj --no-build --verbosity normal
+      run: dotnet test MR.Api/MR.Api.csproj/MR.UnitTests --no-build --verbosity normal
     - name: Docker Build & Push Action
       # You may pin to the exact commit or the version.
       # uses: mr-smithers-excellent/docker-build-push@a7fe6652db5c7274374844e81692992f5a2befb9
