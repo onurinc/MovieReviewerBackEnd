@@ -49,7 +49,7 @@ namespace MR.Api.ControllersV1
             var identityId = new Guid(loggedInUser.Id);
 
             var _review = new Review();
-            _review.ReviewId = new Guid();
+            _review.ReviewId = Guid.NewGuid();
             _review.UserId = identityId;
             _review.MovieId = review.MovieId;
             _review.Body = review.Body;
@@ -102,11 +102,6 @@ namespace MR.Api.ControllersV1
             }
 
             var loggedInUser = await _userManager.GetUserAsync(HttpContext.User);
-
-            //if (!loggedInUser.Id.Equals(reviewToEdit.UserId))
-            //{
-            //    return BadRequest("You need to be logged in on the right account to perform this action");
-            //}
 
             if (loggedInUser == null)
             {

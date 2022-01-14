@@ -64,9 +64,6 @@ namespace MR.Api
             
             services.AddSingleton(tokenValidationParameters);
 
-            //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwt =>
-            //jwt.TokenValidationParameters = tokenValidationParameters
-            //);
 
             services.AddAuthentication(option =>
             {
@@ -77,15 +74,6 @@ namespace MR.Api
             {
                 jwt.SaveToken = true;
                 jwt.TokenValidationParameters = tokenValidationParameters;
-                //new TokenValidationParameters
-                //{
-                //    ValidateIssuerSigningKey = true,
-                //    IssuerSigningKey = new SymmetricSecurityKey(key),
-                //    ValidateIssuer = false,
-                //    ValidateAudience = false,
-                //    RequireExpirationTime = false,
-                //    ValidateLifetime = true
-                //};
             });
 
             services.AddDefaultIdentity<IdentityUser>(options 
@@ -105,14 +93,6 @@ namespace MR.Api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MR.Api v1"));
             }
-
-            //using (var serviceScope = app.ApplicationServices.CreateScope())
-            //{
-            //        MovieReviewerContext context = serviceScope.ServiceProvider.GetService<MovieReviewerContext>();
-            //        string connectionstring = context.Database.GetConnectionString();
-            //        context.Database.EnsureCreated();
-            //        context.Database.Migrate();
-            //}
 
             app.UseCors(options => options
             .WithOrigins(new []{"http://localhost:3000", "http://localhost:8000"})

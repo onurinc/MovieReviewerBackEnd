@@ -33,7 +33,6 @@ namespace MR.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUser(UserDto user)
         {
-            //TODO: check if user exist before doing the add function
             var _user = new User();
             _user.FirstName = user.FirstName;
             _user.LastName = user.LastName;

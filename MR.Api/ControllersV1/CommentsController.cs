@@ -49,7 +49,7 @@ namespace MR.Api.ControllersV1
                 var identityId = new Guid(loggedInUser.Id);
 
                 var _comment = new Comment();
-                _comment.CommentId = new Guid();
+                _comment.CommentId = Guid.NewGuid();
                 _comment.MovieId = 1;
                 _comment.UserId = identityId;
                 _comment.Body = comment.Body;
@@ -101,11 +101,6 @@ namespace MR.Api.ControllersV1
             }
 
             var loggedInUser = await _userManager.GetUserAsync(HttpContext.User);
-
-            //if (!loggedInUser.Id.Equals(commentToEdit.UserId))
-            //{
-            //    return BadRequest("You need to be logged in on the right account to perform this action");
-            //}
 
             if (loggedInUser == null)
             {

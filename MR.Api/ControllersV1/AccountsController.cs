@@ -59,7 +59,7 @@ namespace MR.Api.ControllersV1
                 {
                     Email = registrationDto.Email,
                     UserName = registrationDto.Email,
-                    EmailConfirmed = true, // ToDo build email confirmation
+                    EmailConfirmed = true,
                 };
 
                 var isCreated = await _userManager.CreateAsync(newUser, registrationDto.Password);

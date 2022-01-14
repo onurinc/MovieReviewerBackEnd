@@ -16,7 +16,7 @@ namespace MR.Api.Configuration
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
                 MovieReviewerContext context = serviceScope.ServiceProvider.GetService<MovieReviewerContext>();
-                string connectionstring = context.Database.GetConnectionString();
+                context.Database.GetConnectionString();
                 context.Database.EnsureCreated();
                 context.Database.Migrate();
             }
