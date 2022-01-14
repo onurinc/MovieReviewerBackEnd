@@ -92,6 +92,19 @@ namespace MR.UnitTests
         }
 
         [TestMethod()]
+        public async Task GetCommentByGuid_ReturnsNull_IfCommentDoesntExist()
+        {
+            //Arrange
+            Guid CommentIdToSearch = new Guid("d9419aa6-7b5f-4ad3-8170-0dc12c148b44");
+
+            //Act
+            Comment comment = await this._repository.GetById(CommentIdToSearch);
+
+            //Assert
+            Assert.AreEqual(null, comment);
+        }
+
+        [TestMethod()]
         public async Task CreateCommentAsync()
         {
             Comment newComment = new Comment

@@ -81,7 +81,7 @@ namespace MR.UnitTests
         }
 
         [TestMethod()]
-        public async Task GetRevieByGuid()
+        public async Task GetReviewByGuid()
         {
             //Arrange
             Guid ReviewIdToSearch = new Guid("d9419aa6-7a5f-4ad3-8170-0dc12c148b44");
@@ -92,6 +92,19 @@ namespace MR.UnitTests
             //Assert
             Assert.IsTrue("Test review one" == review.Body);
             Assert.AreEqual(1, review.MovieId);
+        }
+
+        [TestMethod()]
+        public async Task GetReviewByGuid_ReturnsNull_IfGuidDoesntExist()
+        {
+            //Arrange
+            Guid ReviewIdToSearch = new Guid("d9419aa6-7b5f-4ad3-8170-0dc12c148b44");
+
+            //Act
+            Review review = await this._repository.GetById(ReviewIdToSearch);
+
+            //Assert
+            Assert.AreEqual(null, review);
         }
 
         [TestMethod()]
