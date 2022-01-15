@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace MR.Api.ControllersV1
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]

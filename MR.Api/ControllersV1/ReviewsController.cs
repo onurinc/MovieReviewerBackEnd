@@ -23,7 +23,7 @@ namespace MR.Api.ControllersV1
         {
         }
 
-
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "AppUser")]
         [HttpPost]
         public async Task<IActionResult> CreateReview(Review review)
         {
@@ -61,6 +61,7 @@ namespace MR.Api.ControllersV1
             return Ok("Review has been added");
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetReview(Guid id)
         {
@@ -73,6 +74,7 @@ namespace MR.Api.ControllersV1
             return Ok(review);
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAllReviews()
         {
@@ -85,7 +87,7 @@ namespace MR.Api.ControllersV1
             return Ok(reviews);
         }
 
-
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateReview(Guid id, Review review)
         {
@@ -122,6 +124,7 @@ namespace MR.Api.ControllersV1
             return BadRequest("Something went wrong, contact the administrator to report the issue");
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteItem(Guid id)
         {
