@@ -10,13 +10,14 @@ using System.Threading.Tasks;
 
 namespace MR.DataAccessLayer.Repositories
 {
-    class UserRepository : GenericRepository<User>, IUserRepository
+    public class UserRepository : GenericRepository<User>, IUserRepository
     {
         public UserRepository(
             MovieReviewerContext movieReviewerContext, ILogger logger)
             : base (movieReviewerContext, logger)
         {
         }
+
 
         public override async Task<IEnumerable<User>> GetAll()
         {
