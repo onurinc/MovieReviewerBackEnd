@@ -14,7 +14,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.Extensions.Logging;
 
 namespace MR.Api.ControllersV1
 {
@@ -24,13 +24,19 @@ namespace MR.Api.ControllersV1
     {
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly JwtConfig _jwtConfig;
+        private readonly ILogger<AccountsController> _logger;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public AccountsController(
             IUnitOfWork unitOfWork,
             UserManager<IdentityUser> userManager,
             TokenValidationParameters tokenValidationParameters,
-            IOptionsMonitor<JwtConfig> optionMonitor) : base(unitOfWork, userManager)
+            IOptionsMonitor<JwtConfig> optionMonitor,
+            ILogger<AccountsController> logger,
+            RoleManager<IdentityRole> roleManager) : base(unitOfWork, userManager)
         {
+            _roleManager = roleManager;
+            _logger = logger;
             _jwtConfig = optionMonitor.CurrentValue;
             _tokenValidationParameters = tokenValidationParameters;
         }
@@ -61,7 +67,7 @@ namespace MR.Api.ControllersV1
                     UserName = registrationDto.Email,
                     EmailConfirmed = true,
                 };
-
+                await _userManager.AddToRoleAsync(newUser, "AppUser");
                 var isCreated = await _userManager.CreateAsync(newUser, registrationDto.Password);
                 if (!isCreated.Succeeded) // When register failed
                 {
@@ -85,11 +91,7 @@ namespace MR.Api.ControllersV1
 
                 var token = GenerateJwtToken(newUser);
 
-                return Ok(new UserRegistrationResponseDto()
-                {
-                    Succes = true,
-                    Token = token
-                });
+                return Ok(token);
             }
 
             else
@@ -132,11 +134,7 @@ namespace MR.Api.ControllersV1
                 if (isCorrect)
                 {
                     var jwtToken = GenerateJwtToken(userExist);
-                    return Ok(new UserLoginResponseDto()
-                    {
-                        Succes = true,
-                        Token = jwtToken
-                    });
+                    return Ok(jwtToken);
                 }
 
                 else
@@ -163,7 +161,43 @@ namespace MR.Api.ControllersV1
             }
         }
 
-        private string GenerateJwtToken(IdentityUser user)
+        private async Task<List<Claim>> GetAllValidClaims(IdentityUser user)
+        {
+            var claims = new List<Claim>
+            {
+                new Claim("Id", user.Id),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            };
+
+            // Getting the claims that we have assigned to the user
+            var userClaims = await _userManager.GetClaimsAsync(user);
+            claims.AddRange(userClaims);
+
+            // Get the user role and add it to the claims
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            foreach (var userRole in userRoles)
+            {
+                var role = await _roleManager.FindByNameAsync(userRole);
+
+                if (role != null)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, userRole));
+
+                    var roleClaims = await _roleManager.GetClaimsAsync(role);
+                    foreach (var roleClaim in roleClaims)
+                    {
+                        claims.Add(roleClaim);
+                    }
+                }
+            }
+
+            return claims;
+        }
+
+        private async Task<AuthResult> GenerateJwtToken(IdentityUser user)
         {
             // the handler is going to be responsible for creating the token
             var jwtHandler = new JwtSecurityTokenHandler();
@@ -172,16 +206,12 @@ namespace MR.Api.ControllersV1
             // get security key
             var key = Encoding.ASCII.GetBytes(_jwtConfig.Secret);
 
+
+            var claims = await GetAllValidClaims(user);
+
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                        new Claim("Id", user.Id),
-                        new Claim(ClaimTypes.NameIdentifier, user.Id),
-                        new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                        new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                        new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    }),
+                Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.Add(_jwtConfig.ExpiryTimeFrame),
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature
@@ -192,7 +222,11 @@ namespace MR.Api.ControllersV1
             // convert to string
             var jwtToken = jwtHandler.WriteToken(token);
 
-            return jwtToken;
+            return new AuthResult()
+            {
+                Token = jwtToken,
+                Succes = true
+            };
         }
     }
 }
