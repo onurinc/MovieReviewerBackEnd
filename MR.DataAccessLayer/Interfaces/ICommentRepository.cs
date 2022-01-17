@@ -10,7 +10,7 @@ namespace MR.DataAccessLayer.Interfaces
     public interface ICommentRepository : IGenericRepository<Comment>
     {
 
-
+        Task<IEnumerable<Comment>> GetCommenstById(int movieId);
 
     }
 }

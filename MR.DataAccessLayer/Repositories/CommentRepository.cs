@@ -32,6 +32,18 @@ namespace MR.DataAccessLayer.Repositories
             }
         }
 
+        public async Task<IEnumerable<Comment>> GetCommenstById(int movieId)
+        {
+            try
+            {
+                return await dbSet.Where(x => x.MovieId == movieId).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "{Repo} GetCommentsById method has generated an error", typeof(CommentRepository));
+                return null;
+            }
+        }
 
         public override async Task<bool> Upsert(Comment comment)
         {

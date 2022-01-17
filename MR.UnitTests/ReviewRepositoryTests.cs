@@ -146,5 +146,23 @@ namespace MR.UnitTests
             Assert.IsTrue("Edited body" == updatedReview.Body);
         }
 
+        [TestMethod()]
+        public async Task DeleteReview_ReturnsTrue_IfCommentExists()
+        {
+            Guid ReviewToSearch = new Guid("d9419aa6-7a5f-4ad3-8170-0dc12c148b44");
+            bool outcome = await this._repository.Delete(ReviewToSearch);
+
+            Assert.AreEqual(outcome, true);
+        }
+
+        [TestMethod()]
+        public async Task DeleteReview_ReturnsFalse_IfCommentDoesntExists()
+        {
+            Guid ReviewToSearch = new Guid("1e430f9b-2dd1-4c90-af4a-94c12f3321e3");
+            bool outcome = await this._repository.Delete(ReviewToSearch);
+
+            Assert.AreEqual(outcome, false);
+        }
+
     }
 }

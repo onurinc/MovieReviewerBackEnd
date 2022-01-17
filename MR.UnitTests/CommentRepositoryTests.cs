@@ -140,5 +140,23 @@ namespace MR.UnitTests
             Assert.IsTrue("Edited body" == updatedComment.Body);
         }
 
+        [TestMethod()]
+        public async Task DeleteComment_ReturnsTrue_IfCommentExists()
+        {
+            Guid CommentIdToSearch = new Guid("d9419aa6-7a5f-4ad3-8170-0dc12c148b44");
+            bool outcome = await this._repository.Delete(CommentIdToSearch);
+
+            Assert.AreEqual(outcome, true);
+        }
+
+        [TestMethod()]
+        public async Task DeleteComment_ReturnsFalse_IfCommentDoesntExists()
+        {
+            Guid CommentIdToSearch = new Guid("1e430f9b-2dd1-4c90-af4a-94c12f3321e3");
+            bool outcome = await this._repository.Delete(CommentIdToSearch);
+
+            Assert.AreEqual(outcome, false);
+        }
+
     }
 }

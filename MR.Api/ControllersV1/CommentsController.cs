@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 
 namespace MR.Api.ControllersV1
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class CommentsController : BaseController
@@ -24,7 +23,6 @@ namespace MR.Api.ControllersV1
         {
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "AppUser")]
         [HttpPost]
         public async Task<IActionResult> CreateComment(Comment comment)
         {
@@ -51,7 +49,7 @@ namespace MR.Api.ControllersV1
 
                 var _comment = new Comment();
                 _comment.CommentId = Guid.NewGuid();
-                _comment.MovieId = 1;
+                _comment.MovieId = comment.MovieId;
                 _comment.UserId = identityId;
                 _comment.Body = comment.Body;
 
@@ -60,6 +58,18 @@ namespace MR.Api.ControllersV1
 
            
                 return Ok("Comment has been added");
+        }
+
+        [HttpGet("movieid/{movieId}")]
+        public async Task<IActionResult> GetCommentByMovieId(int movieId)
+        {
+            var commentsbyId = await _unitOfWork.Comments.GetCommenstById(movieId);
+
+            if (commentsbyId == null)
+            {
+                return NotFound();
+            }
+            return Ok(commentsbyId);
         }
 
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
