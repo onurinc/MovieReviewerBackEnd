@@ -22,7 +22,7 @@ namespace MR.Api.ControllersV1
         {
         }
 
-        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "AppUser")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "AppUser")]
         [HttpPost]
         public async Task<IActionResult> CreateReview(Review review)
         {
@@ -58,6 +58,20 @@ namespace MR.Api.ControllersV1
             await _unitOfWork.CompleteAsync();
 
             return Ok("Review has been added");
+        }
+
+
+
+        [HttpGet("movieid/{movieId}")]
+        public async Task<IActionResult> GetReviewByMovieId(int movieId)
+        {
+            var reviewsByMovieId = await _unitOfWork.Reviews.GetReviewsByMovieId(movieId);
+
+            if (reviewsByMovieId == null)
+            {
+                return NotFound();
+            }
+            return Ok(reviewsByMovieId);
         }
 
         [HttpGet("{id}")]

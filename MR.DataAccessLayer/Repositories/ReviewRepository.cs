@@ -18,6 +18,19 @@ namespace MR.DataAccessLayer.Repositories
         {
         }
 
+        public async Task<IEnumerable<Review>> GetReviewsByMovieId(int movieId)
+        {
+            try
+            {
+                return await dbSet.Where(x => x.MovieId == movieId).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "{Repo} GetReviewsByMovieId method has generated an error", typeof(ReviewRepository));
+                return null;
+            }
+        }
+
         public override async Task<IEnumerable<Review>> GetAll()
         {
             try

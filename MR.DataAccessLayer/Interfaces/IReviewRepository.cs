@@ -9,6 +9,6 @@ namespace MR.DataAccessLayer.Interfaces
 {
     public interface IReviewRepository : IGenericRepository<Review>
     {
-
+        Task<IEnumerable<Review>> GetReviewsByMovieId(int movieId);
     }
 }

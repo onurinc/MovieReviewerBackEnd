@@ -23,6 +23,7 @@ namespace MR.Api.ControllersV1
         {
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "AppUser")]
         [HttpPost]
         public async Task<IActionResult> CreateComment(Comment comment)
         {
