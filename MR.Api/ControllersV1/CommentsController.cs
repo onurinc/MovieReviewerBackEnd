@@ -61,6 +61,7 @@ namespace MR.Api.ControllersV1
                 return Ok("Comment has been added");
         }
 
+
         [HttpGet("movieid/{movieId}")]
         public async Task<IActionResult> GetCommentByMovieId(int movieId)
         {
@@ -86,6 +87,7 @@ namespace MR.Api.ControllersV1
             return Ok(comment);
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> GetAllComments()
         {
