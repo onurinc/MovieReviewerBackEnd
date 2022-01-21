@@ -61,7 +61,6 @@ namespace MR.Api.ControllersV1
         }
 
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpGet("movieid/{movieId}")]
         public async Task<IActionResult> GetReviewByMovieId(int movieId)
         {
@@ -74,6 +73,7 @@ namespace MR.Api.ControllersV1
             return Ok(reviewsByMovieId);
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetReview(Guid id)
         {
